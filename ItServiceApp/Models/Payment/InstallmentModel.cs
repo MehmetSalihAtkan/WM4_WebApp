@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ItServiceApp.Models.Payment
 {
@@ -17,8 +14,6 @@ namespace ItServiceApp.Models.Payment
         public long? BankCode { get; set; }
         public string BankName { get; set; }
         public int? ForceCvc { get; set; }
-
         public List<InstallmentPriceModel> InstallmentPrices { get; set; }
-
     }
 }

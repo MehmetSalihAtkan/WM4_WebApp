@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ItServiceApp.Migrations
 {
-    public partial class Eticaret : Migration
+    public partial class Eticaret1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cities",
+                name: "City",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -18,11 +18,11 @@ namespace ItServiceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.PrimaryKey("PK_City", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionTypes",
+                name: "SubscriptionType",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -36,11 +36,11 @@ namespace ItServiceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionTypes", x => x.Id);
+                    table.PrimaryKey("PK_SubscriptionType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "States",
+                name: "State",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,17 +50,17 @@ namespace ItServiceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_States", x => x.Id);
+                    table.PrimaryKey("PK_State", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_States_Cities_CityId",
+                        name: "FK_State_City_CityId",
                         column: x => x.CityId,
-                        principalTable: "Cities",
+                        principalTable: "City",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscriptions",
+                name: "Subscription",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -76,23 +76,23 @@ namespace ItServiceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                    table.PrimaryKey("PK_Subscription", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_AspNetUsers_UserId",
+                        name: "FK_Subscription_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_SubscriptionTypes_SubscriptionTypeId",
+                        name: "FK_Subscription_SubscriptionType_SubscriptionTypeId",
                         column: x => x.SubscriptionTypeId,
-                        principalTable: "SubscriptionTypes",
+                        principalTable: "SubscriptionType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -108,63 +108,63 @@ namespace ItServiceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_AspNetUsers_UserId",
+                        name: "FK_Address_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Addresses_States_StateId",
+                        name: "FK_Address_State_StateId",
                         column: x => x.StateId,
-                        principalTable: "States",
+                        principalTable: "State",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_StateId",
-                table: "Addresses",
+                name: "IX_Address_StateId",
+                table: "Address",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UserId",
-                table: "Addresses",
+                name: "IX_Address_UserId",
+                table: "Address",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_States_CityId",
-                table: "States",
+                name: "IX_State_CityId",
+                table: "State",
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_SubscriptionTypeId",
-                table: "Subscriptions",
+                name: "IX_Subscription_SubscriptionTypeId",
+                table: "Subscription",
                 column: "SubscriptionTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserId",
-                table: "Subscriptions",
+                name: "IX_Subscription_UserId",
+                table: "Subscription",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "Subscription");
 
             migrationBuilder.DropTable(
-                name: "States");
+                name: "State");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionTypes");
+                name: "SubscriptionType");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "City");
         }
     }
 }

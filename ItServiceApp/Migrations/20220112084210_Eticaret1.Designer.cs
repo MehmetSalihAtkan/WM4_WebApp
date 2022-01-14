@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItServiceApp.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220112084726_Eticaret")]
-    partial class Eticaret
+    [Migration("20220112084210_Eticaret1")]
+    partial class Eticaret1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,7 +63,7 @@ namespace ItServiceApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("ItServiceApp.Models.Entities.City", b =>
@@ -81,7 +81,7 @@ namespace ItServiceApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("City");
                 });
 
             modelBuilder.Entity("ItServiceApp.Models.Entities.Deneme", b =>
@@ -117,7 +117,7 @@ namespace ItServiceApp.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("States");
+                    b.ToTable("State");
                 });
 
             modelBuilder.Entity("ItServiceApp.Models.Entities.Subscription", b =>
@@ -162,7 +162,7 @@ namespace ItServiceApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscription");
                 });
 
             modelBuilder.Entity("ItServiceApp.Models.Entities.SubscriptionType", b =>
@@ -198,7 +198,7 @@ namespace ItServiceApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes");
+                    b.ToTable("SubscriptionType");
                 });
 
             modelBuilder.Entity("ItServiceApp.Models.Identity.ApplicationRole", b =>

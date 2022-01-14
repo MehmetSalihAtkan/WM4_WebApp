@@ -1,14 +1,10 @@
 ﻿using Iyzipay;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ItServiceApp.Models
+namespace ItServiceApp.Models.Payment
 {
-    public class IyzicoPaymentOptions:Options
+    public class IyzicoPaymentOptions : Options
     {
-        public const string Key = "IyzicoIptions";
-        public string ThreadsCallbackUrl { get; set; }
+        public const string Key = "IyzicoOptions";
+        public string ThreedsCallbackUrl { get; set; }
     }
 }

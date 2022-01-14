@@ -293,9 +293,7 @@ namespace ItServiceApp.Controllers
                 return View();
             }
         }
-
         [AllowAnonymous]
-        [HttpGet]
         public IActionResult ResetPassword()
         {
             return View();
@@ -305,7 +303,8 @@ namespace ItServiceApp.Controllers
         public async Task<IActionResult> ResetPassword(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user==null)
+
+            if (user == null)
             {
                 ViewBag.Message = "Girdiğiniz email sistemimizde bulunamadı";
             }
@@ -320,29 +319,28 @@ namespace ItServiceApp.Controllers
                 {
                     Contacts = new string[] { user.Email },
                     Body =
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
+                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
                     Subject = "Reset Password"
                 };
                 await _emailSender.SendAsync(emailMessage);
-                ViewBag.Message = "Mailinize Şifre güncelleme bağlantınız gönderilmiştir.";
-
+                ViewBag.Message = "Mailinize Şifre güncelleme yönergemiz gönderilmiştir";
             }
-            return View();
 
+            return View();
         }
         [AllowAnonymous]
-        public IActionResult ConfirmResetPassword(string userId,string code)
+        public IActionResult ConfirmResetPassword(string userId, string code)
         {
-            if (string.IsNullOrEmpty(userId)||string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
             {
                 return BadRequest("Hatalı istek");
-                
             }
+
             ViewBag.Code = code;
             ViewBag.UserId = userId;
             return View();
-
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmResetPassword(ResetPasswordViewModel model)
@@ -350,30 +348,29 @@ namespace ItServiceApp.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-
             }
+
             var user = await _userManager.FindByIdAsync(model.UserId);
-            if (user==null)
+
+            if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Kullanıcı bulunamadı");
                 return View();
-
             }
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
             var result = await _userManager.ResetPasswordAsync(user, code, model.NewPassword);
+
             if (result.Succeeded)
             {
                 //email gönder
-                TempData["Message"] = "Şifre değişikliğiniz gerçekleştirilmiştir.";
+                TempData["Message"] = "Şifre değişikliğiniz gerçekleştirilmiştir";
                 return View();
-
             }
             else
             {
                 var message = string.Join("<br>", result.Errors.Select(x => x.Description));
                 TempData["Message"] = message;
                 return View();
-
             }
         }
     }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ItServiceApp.ViewModels
 {
     public class ResetPasswordViewModel
     {
-
         [Required(ErrorMessage = "Eski Şifre alanı gereklidir.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Şifreniz minimum 6 karaterli olmalıdır!")]
         [Display(Name = "Yeni Şifre")]
@@ -21,6 +16,5 @@ namespace ItServiceApp.ViewModels
         public string ConfirmNewPassword { get; set; }
         public string Code { get; set; }
         public string UserId { get; set; }
-
     }
 }

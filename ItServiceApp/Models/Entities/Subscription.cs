@@ -1,14 +1,11 @@
-﻿using ItServiceApp.Models.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using ItServiceApp.Models.Identity;
 
 namespace ItServiceApp.Models.Entities
 {
-    public class Subscription:BaseEntity
+    public class Subscription : BaseEntity
     {
         public Guid SubscriptionTypeId { get; set; }
         public decimal Amount { get; set; }

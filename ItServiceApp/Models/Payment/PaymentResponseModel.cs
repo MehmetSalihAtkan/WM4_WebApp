@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ItServiceApp.Models.Payment
+﻿namespace ItServiceApp.Models.Payment
 {
     public class PaymentResponseModel
     {

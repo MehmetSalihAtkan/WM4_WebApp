@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ItServiceApp.Models
+﻿namespace ItServiceApp.Models.Payment
 {
     public class BasketModel
     {
@@ -13,6 +8,5 @@ namespace ItServiceApp.Models
         public string Category1 { get; set; }
         public string Category2 { get; set; }
         public string ItemType { get; set; }
-
     }
 }

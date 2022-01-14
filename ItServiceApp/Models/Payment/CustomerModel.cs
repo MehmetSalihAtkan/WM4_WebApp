@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ItServiceApp.Models
+﻿namespace ItServiceApp.Models.Payment
 {
     public class CustomerModel
     {
@@ -14,7 +9,7 @@ namespace ItServiceApp.Models
         public string Email { get; set; }
         public string GsmNumber { get; set; }
         public string RegistrationDate { get; set; }
-        public string LastloginDate { get; set; }
+        public string LastLoginDate { get; set; }
         public string RegistrationAddress { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

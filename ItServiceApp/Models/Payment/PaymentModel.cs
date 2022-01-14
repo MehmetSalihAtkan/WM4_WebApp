@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ItServiceApp.Models.Payment
 {
@@ -15,5 +12,8 @@ namespace ItServiceApp.Models.Payment
         public List<BasketModel> BasketList { get; set; }
         public CustomerModel Customer { get; set; }
         public AddressModel Address { get; set; }
+        public  string Ip { get; set; }
+        public string UserId { get; set; }
+
     }
 }
