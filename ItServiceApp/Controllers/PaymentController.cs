@@ -54,18 +54,12 @@ namespace ItServiceApp.Controllers
                 Ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
                 
             };
-            var installmentInfo=_paymentService.CheckInstallments(paymentModel.CardModel.CardNumber.Substring(0, 6), paymentModel.Price);
-            var installmentNumber = installmentInfo.InstallmentPrices.FirstOrDefault(x => x.InstallmentNumber == model.Installment);
+            var installmentInfo = _paymentService.CheckInstallments(paymentModel.CardModel.CardNumber.Substring(0, 6), paymentModel.Price);
 
+            var installmentNumber =
+                installmentInfo.InstallmentPrices.FirstOrDefault(x => x.InstallmentNumber == model.Installment);
 
-            if (installmentNumber!=null)
-            {
-                paymentModel.PaidPrice = decimal.Parse(installmentNumber.TotalPrice);
-            }
-            else
-            {
-                paymentModel.PaidPrice = decimal.Parse(installmentInfo.InstallmentPrices[0].TotalPrice);
-            }
+            paymentModel.PaidPrice = decimal.Parse(installmentNumber != null ? installmentNumber.TotalPrice.Replace('.', ',') : installmentInfo.InstallmentPrices[0].TotalPrice.Replace('.', ','));
 
             var result = _paymentService.Pay(paymentModel);
 
