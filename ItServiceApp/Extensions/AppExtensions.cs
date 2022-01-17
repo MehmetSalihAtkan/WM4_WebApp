@@ -22,7 +22,7 @@ namespace ItServiceApp.Extensions
             {
                 foreach (var error in entry.Errors)
                     messages.Add(error.ErrorMessage);
-            }
+            } 
 
             return String.Join(" ", messages);
         }
