@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using AutoMapper;
-using ItServiceApp.Models;
+﻿using AutoMapper;
 using ItServiceApp.Models.Identity;
 using ItServiceApp.Models.Payment;
 using Iyzipay.Model;
@@ -10,6 +6,9 @@ using Iyzipay.Request;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MUsefulMethods;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace ItServiceApp.Services
 {
@@ -24,7 +23,6 @@ namespace ItServiceApp.Services
             _configuration = configuration;
             _mapper = mapper;
             _userManager = userManager;
-
             var section = _configuration.GetSection(IyzicoPaymentOptions.Key);
             _options = new IyzicoPaymentOptions()
             {
@@ -39,48 +37,53 @@ namespace ItServiceApp.Services
         {
             return StringHelpers.GenerateUniqueCode();
         }
+
         private CreatePaymentRequest InitialPaymentRequest(PaymentModel model)
         {
-            var paymentRequest = new CreatePaymentRequest();
-            paymentRequest.Installment = model.Installment;
-            paymentRequest.Locale = Locale.TR.ToString();
-            paymentRequest.ConversationId = GenerateConversationId();
-            paymentRequest.Price = model.Price.ToString(new CultureInfo("en-US"));
-            paymentRequest.PaidPrice = model.PaidPrice.ToString(new CultureInfo("en-US"));
-            paymentRequest.Currency = Currency.TRY.ToString();
-            paymentRequest.BasketId = StringHelpers.GenerateUniqueCode();
-            paymentRequest.PaymentChannel = PaymentChannel.WEB.ToString();
-            paymentRequest.PaymentGroup = PaymentGroup.SUBSCRIPTION.ToString();
-            paymentRequest.PaymentCard = _mapper.Map<PaymentCard>(model.CardModel);
+            var paymentRequest = new CreatePaymentRequest
+            {
+                Installment = model.Installment,
+                Locale = Locale.TR.ToString(),
+                ConversationId = GenerateConversationId(),
+                Price = model.Price.ToString(new CultureInfo("en-US")),
+                PaidPrice = model.PaidPrice.ToString(new CultureInfo("en-US")),
+                Currency = Currency.TRY.ToString(),
+                BasketId = StringHelpers.GenerateUniqueCode(),
+                PaymentChannel = PaymentChannel.WEB.ToString(),
+                PaymentGroup = PaymentGroup.SUBSCRIPTION.ToString(),
+                PaymentCard = _mapper.Map<PaymentCard>(model.CardModel)
+            };
+
             var user = _userManager.FindByIdAsync(model.UserId).Result;
+
             var buyer = new Buyer
             {
-                Id = "B789",
-                Name = "John",
-                Surname = "Doe",
-                GsmNumber = "+905498769878",
-                Email = "email@email.com",
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                GsmNumber = user.PhoneNumber,
+                Email = user.Email,
                 IdentityNumber = "11111111110",
                 LastLoginDate = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}",
                 RegistrationDate = $"{user.CreatedDate:yyyy-MM-dd HH:mm:ss}",
-                RegistrationAddress = "Cihannuma Mah.Barbaros Bulvarı No:9 Beşiktaş",
+                RegistrationAddress = "Cihannuma Mah. Barbaros Bulvarı No:9 Beşiktaş",
                 Ip = model.Ip,
-                City="İstanbul",
+                City = "Istanbul",
                 Country = "Turkey",
-                ZipCode = "34732",
-
+                ZipCode = "34732"
             };
             paymentRequest.Buyer = buyer;
-            Address billingAdress = new Address
-            {
-                ContactName = $"{user.Name}{user.Surname}",
-                City = "İstanbul",
-                Country = "Turkey",
-                ZipCode = "34732",
-                Description = "Cihannuma Mah.Barbaros Bulvarı No:9 Beşiktaş"
 
+            var billingAddress = new Address
+            {
+                ContactName = $"{user.Name} {user.Surname}",
+                City = "Istanbul",
+                Country = "Turkey",
+                Description = "Cihannuma Mah. Barbaros Bulvarı No:9 Beşiktaş",
+                ZipCode = "34742"
             };
-            paymentRequest.BillingAddress = billingAdress;
+            paymentRequest.BillingAddress = billingAddress;
+
             var basketItems = new List<BasketItem>();
             var firstBasketItem = new BasketItem
             {
@@ -93,6 +96,7 @@ namespace ItServiceApp.Services
             };
             basketItems.Add(firstBasketItem);
             paymentRequest.BasketItems = basketItems;
+
             return paymentRequest;
         }
 
@@ -119,7 +123,7 @@ namespace ItServiceApp.Services
             }
 
             var resultModel = _mapper.Map<InstallmentModel>(result.InstallmentDetails[0]);
-            
+
             return resultModel;
         }
 
@@ -127,7 +131,6 @@ namespace ItServiceApp.Services
         {
             var request = this.InitialPaymentRequest(model);
             var payment = Payment.Create(request, _options);
-
             return _mapper.Map<PaymentResponseModel>(payment);
         }
     }

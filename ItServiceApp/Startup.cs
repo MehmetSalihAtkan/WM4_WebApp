@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using ItServiceApp.Data;
 using ItServiceApp.Extensions;
 using ItServiceApp.InjectOrnek;
@@ -7,10 +8,12 @@ using ItServiceApp.Models.Identity;
 using ItServiceApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace ItServiceApp
@@ -73,6 +76,12 @@ namespace ItServiceApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+                @"node_modules")),
+                RequestPath=new PathString("/vendor")
+            });
 
             app.UseRouting();
 
@@ -81,6 +90,7 @@ namespace ItServiceApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute("admin", "admin", "admin/{controller=Manage}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

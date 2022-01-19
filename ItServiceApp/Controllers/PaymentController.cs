@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ItServiceApp.Extensions;
 using ItServiceApp.Models.Payment;
@@ -51,19 +52,19 @@ namespace ItServiceApp.Controllers
                 CardModel = model.CardModel,
                 Price = 1000,
                 UserId = HttpContext.GetUserId(),
-                Ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
-                
+                Ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString()
             };
+
             var installmentInfo = _paymentService.CheckInstallments(paymentModel.CardModel.CardNumber.Substring(0, 6), paymentModel.Price);
 
             var installmentNumber =
                 installmentInfo.InstallmentPrices.FirstOrDefault(x => x.InstallmentNumber == model.Installment);
 
-            paymentModel.PaidPrice = decimal.Parse(installmentNumber != null ? installmentNumber.TotalPrice.Replace('.', ',') : installmentInfo.InstallmentPrices[0].TotalPrice.Replace('.', ','));
+            paymentModel.PaidPrice = decimal.Parse(installmentNumber != null ? installmentNumber.TotalPrice.Replace('.', ',') : installmentInfo.InstallmentPrices[0].TotalPrice.Replace('.',','));
+
+            //legacy code
 
             var result = _paymentService.Pay(paymentModel);
-
-
             return View();
         }
     }
