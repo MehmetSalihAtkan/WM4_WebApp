@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace ItServiceApp
 {
@@ -64,7 +65,12 @@ namespace ItServiceApp
 
             services.AddApplicationServices(this.Configuration);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(
+                options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,9 +84,8 @@ namespace ItServiceApp
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
-                @"node_modules")),
-                RequestPath=new PathString("/vendor")
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
+                RequestPath = new PathString("/vendor")
             });
 
             app.UseRouting();
